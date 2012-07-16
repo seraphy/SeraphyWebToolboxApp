@@ -55,6 +55,7 @@
     <Reference Include="System.Web.ApplicationServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ConvColumnName.aspx" />
     <Content Include="ConvInsertDML.aspx" />
     <Content Include="Styles\Site.css" />
     <Content Include="Default.aspx" />
@@ -71,6 +72,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvColumnName.aspx.cs">
+      <DependentUpon>ConvColumnName.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ConvColumnName.aspx.designer.cs">
+      <DependentUpon>ConvColumnName.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ConvInsertDML.aspx.cs">
       <DependentUpon>ConvInsertDML.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -96,6 +104,7 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
+    <Compile Include="StringUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

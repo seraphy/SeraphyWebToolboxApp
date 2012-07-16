@@ -104,25 +104,25 @@ namespace WebToolboxApp
 
         private void ParseRows(string txtRows, Action<string[]> callback)
         {
-            IEnumerable<string> rowLines = ConvertRows(txtRows);
+            IEnumerable<string> rowLines = StringUtils.ConvertRows(txtRows);
             foreach (string rowLine in rowLines)
             {
                 if (!string.IsNullOrWhiteSpace(rowLine))
                 {
-                    callback(Split(rowLine, CheckTabOnly.Checked));
+                    callback(StringUtils.Split(rowLine, CheckTabOnly.Checked));
                 }
             }
         }
 
         private IList<ColumnDef> GetColumnDefs(string txtColumn)
         {
-            IEnumerable<string> columnLines = ConvertRows(txtColumn);
+            IEnumerable<string> columnLines = StringUtils.ConvertRows(txtColumn);
             var columnDefs = new List<ColumnDef>();
             foreach (string columnLine in columnLines)
             {
                 if (!string.IsNullOrWhiteSpace(columnLine))
                 {
-                    var tokens = Split(columnLine);
+                    var tokens = StringUtils.Split(columnLine);
                     if (tokens.Length > 0)
                     {
                         string name = tokens[0];
@@ -143,24 +143,6 @@ namespace WebToolboxApp
                 string.Join(", ", columnDefs.Select(o => o.ToString()).ToArray()) +
                 "]");
             return columnDefs;
-        }
-
-        private string[] Split(string line, bool tabOnly = false)
-        {
-            line = line ?? "";
-            if (tabOnly)
-            {
-                return line.Split('\t');
-            }
-            return spacerRegex.Replace(line.Trim(), "\t").Split('\t');
-        }
-
-        private static IEnumerable<string> ConvertRows(string rawText)
-        {
-            rawText = rawText ?? "";
-            rawText = rawText.Replace("\r\n", "\n");
-            rawText = rawText.Replace("\r", "\n");
-            return rawText.Split('\n');
         }
 
         protected void BtnClear_Click(object sender, EventArgs e)

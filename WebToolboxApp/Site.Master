@@ -21,7 +21,10 @@
             <div class="clear hideSkiplink">
                 <asp:Menu ID="NavigationMenu" runat="server" CssClass="menu" EnableViewState="false" IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
-                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="ホーム"/>
+                        <asp:MenuItem NavigateUrl="~/Default.aspx" Text="ツール">
+                            <asp:MenuItem NavigateUrl="~/ConvInsertDML.aspx" Text="タブ区切りテキストからのINSERT文生成" />
+                            <asp:MenuItem NavigateUrl="~/ConvColumnName.aspx" Text="DBカラム名→CamelStyleプロパティ名変換" />
+                        </asp:MenuItem>
                     </Items>
                 </asp:Menu>
             </div>
@@ -33,7 +36,8 @@
         </div>
     </div>
     <div class="footer">
-        
+        <span style="margin-left: 1em;">Copyright 2012 <a href="mailto:contact@seraphyware.com">seraphyware</a></span> 
+        <span style="margin-left: 1em;">PoweredBy <a href="http://www.epw.jp/">ExpressWeb</a></span>
     </div>
     </form>
 </body>

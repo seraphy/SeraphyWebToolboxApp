@@ -10,5 +10,8 @@
         <li>
             <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="~/ConvInsertDML.aspx" Text="タブ区切りテキストからのINSERT文生成"/>
         </li>
+        <li>
+            <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/ConvColumnName.aspx" Text="DBカラム名→CamelStyleプロパティ名変換"/>
+        </li>
     </ul>
 </asp:Content>
