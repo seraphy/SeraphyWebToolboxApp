@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,41 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BtnClear.Text" xml:space="preserve">
-    <value>クリア</value>
-  </data>
-  <data name="BtnGenerate.Text" xml:space="preserve">
-    <value>INSERT文の生成</value>
-  </data>
-  <data name="CheckTabOnly.Text" xml:space="preserve">
-    <value>タブ区切りのみ (Offにすると空白もカラム区切りと認識します)</value>
-  </data>
-  <data name="ContinuationValues.Text" xml:space="preserve">
-    <value>連結形式</value>
-  </data>
   <data name="Title" xml:space="preserve">
-    <value>タブ区切りテキストからのINSERT文生成</value>
+    <value>カラム名→CamelStyleプロパティ名変換</value>
   </data>
-  <data name="TxtColumns.Columns" xml:space="preserve">
-    <value>100</value>
-  </data>
-  <data name="TxtColumns.Rows" xml:space="preserve">
-    <value>15</value>
-  </data>
-  <data name="TxtColumns.Text" xml:space="preserve">
-    <value>タブ区切りで、カラム名とカラムの型名を指定します。
-型名はnumber, numeric, integer, real, doubleなどから数値カラムであるかを判定するためのものです。</value>
-  </data>
-  <data name="TxtDataRows.Columns" xml:space="preserve">
-    <value>100</value>
-  </data>
-  <data name="TxtDataRows.Rows" xml:space="preserve">
-    <value>20</value>
-  </data>
-  <data name="TxtDataRows.Text" xml:space="preserve">
-    <value>タブ区切りのカラムデータをリスト。</value>
-  </data>
-  <data name="TxtTableName.Text" xml:space="preserve">
-    <value>テーブル名</value>
+  <data name="Txt.InitialMode" xml:space="preserve">
+    <value>初期モード</value>
   </data>
 </root>

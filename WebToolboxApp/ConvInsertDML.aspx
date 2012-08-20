@@ -1,9 +1,9 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ConvInsertDML.aspx.cs" MasterPageFile="~/Site.master" Inherits="WebToolboxApp.ConvInsertDML" %>
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ConvInsertDML.aspx.cs" MasterPageFile="~/Site.master" Inherits="WebToolboxApp.ConvInsertDML" %>
 <asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
 </asp:Content>
 
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
-    <h2>タブ区切りテキストからのINSERT文生成</h2>
+    <h2><asp:Literal ID="Literal1" runat="server" Text="<%$ Resources: Title %>" /></h2>
     <div>
         <div>
             <div style="width: 100px; text-align: right; margin-right: 20px; float: left;">TableName:</div>
@@ -20,6 +20,7 @@
         <div>
             <div style="width: 100px; text-align: right; margin-right: 20px; float: left;">&nbsp;</div>
             <asp:CheckBox ID="CheckTabOnly" runat="server" Checked="true" meta:resourcekey="CheckTabOnly"/>
+            <asp:CheckBox ID="ContinuationValues" runat="server" Checked="true" meta:resourcekey="ContinuationValues"/>
         </div>
     </div>
     <div>

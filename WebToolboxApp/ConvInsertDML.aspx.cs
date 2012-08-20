@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Text.RegularExpressions;
 using System.Text;
+using WebToolboxApp.Moudles;
 
 namespace WebToolboxApp
 {
@@ -88,15 +89,43 @@ namespace WebToolboxApp
                         }
                         values.Append(value);
                     }
-                    
-                    sql.Append("insert into ");
-                    sql.Append(TxtTableName.Text);
-                    sql.Append(" (");
-                    sql.Append(header);
-                    sql.Append(") values (");
-                    sql.Append(values);
-                    sql.Append(");\r\n");
+
+                    if (ContinuationValues.Checked)
+                    {
+                        if (sql.Length == 0)
+                        {
+                            sql.Append("insert into ");
+                            sql.Append(TxtTableName.Text);
+                            sql.Append(" (");
+                            sql.Append(header);
+                            sql.Append(") values\r\n");
+                            sql.Append("(");
+                            sql.Append(values);
+                            sql.Append(")");
+                        }
+                        else
+                        {
+                            sql.Append(",\r\n(");
+                            sql.Append(values);
+                            sql.Append(")");
+                        }
+                    }
+                    else
+                    {
+                        sql.Append("insert into ");
+                        sql.Append(TxtTableName.Text);
+                        sql.Append(" (");
+                        sql.Append(header);
+                        sql.Append(") values (");
+                        sql.Append(values);
+                        sql.Append(");\r\n");
+                    }
                 });
+
+            if (ContinuationValues.Checked)
+            {
+                sql.Append(";\r\n");
+            }
 
             TxtSQL.Text = sql.ToString();
             TxtSQL.Visible = true;

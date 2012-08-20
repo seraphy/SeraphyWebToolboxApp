@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Text.RegularExpressions;
 
-namespace WebToolboxApp
+namespace WebToolboxApp.Moudles
 {
     /// <summary>
     /// 文字列関連ユーテリティ

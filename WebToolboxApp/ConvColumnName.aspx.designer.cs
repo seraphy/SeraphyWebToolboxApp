@@ -1,4 +1,4 @@
-﻿//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 // <自動生成>
 //     このコードはツールによって生成されました。
 //
@@ -13,13 +13,13 @@ namespace WebToolboxApp {
     public partial class ConvColumnName {
         
         /// <summary>
-        /// form1 コントロール。
+        /// Literal1 コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.WebControls.Literal Literal1;
         
         /// <summary>
         /// TxtDBColumns コントロール。

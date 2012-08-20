@@ -1,10 +1,15 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ConvColumnName.aspx.cs"  MasterPageFile="~/Site.master" Inherits="WebToolboxApp.ConvColumnName" %>
+<%@ Page Language="C#"
+    AutoEventWireup="true"
+    CodeBehind="ConvColumnName.aspx.cs"
+    MasterPageFile="~/Site.master"
+    Inherits="WebToolboxApp.ConvColumnName"
+    %>
 
 <asp:Content ID="HeaderContent" runat="server" ContentPlaceHolderID="HeadContent">
 </asp:Content>
 
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
-    <h2>カラム名→CamelStyleプロパティ名変換</h2>
+    <h2><asp:Literal ID="Literal1" runat="server" Text="<%$ Resources: Title %>" /></h2>
     <div>
         <asp:TextBox
             ID="TxtDBColumns"
@@ -19,7 +24,7 @@
             onclick="BtnConvert_Click" />
         <asp:Button ID="BtnClear" runat="server" Text="Clear" 
             onclick="BtnClear_Click" />
-        <asp:CheckBox ID="InitialMode" runat="server" Text="初期モード" Checked="true"/>
+        <asp:CheckBox ID="InitialMode" runat="server" Text="<%$ Resources: Txt.InitialMode %>" Checked="true"/>
     </div>
     <div>
         <asp:TextBox
