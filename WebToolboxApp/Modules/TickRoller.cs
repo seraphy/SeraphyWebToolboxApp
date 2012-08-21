@@ -7,11 +7,11 @@ using System.Diagnostics;
 
 namespace WebToolboxApp.Modules
 {
-    public class FileLoggerRoller : IRegisteredObject
+    public class TickRoller : IRegisteredObject
     {
         private System.Threading.Timer _timer;
 
-        public FileLoggerRoller()
+        public TickRoller()
         {
             TimeSpan span = TimeSpan.Parse("00:00:10");
             HostingEnvironment.RegisterObject(this);

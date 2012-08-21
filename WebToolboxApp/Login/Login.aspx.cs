@@ -54,8 +54,9 @@ namespace WebToolboxApp.Login
                     if (matched)
                     {
                         // 認証OK
-                        FormsAuthentication.SetAuthCookie(userName, false);
-                        Response.Redirect("~/Admin/Default.aspx", true);
+                        //FormsAuthentication.SetAuthCookie(userName, false);
+                        //Response.Redirect("~/Admin/Default.aspx", true);
+                        FormsAuthentication.RedirectFromLoginPage(userName, false); 
                         return;
                     }
                 }

@@ -13,12 +13,12 @@ namespace WebToolboxApp
 {
     public class Global : System.Web.HttpApplication
     {
-        private FileLoggerRoller fileLoggerRoller;
+        private TickRoller fileLoggerRoller;
 
         void Application_Start(object sender, EventArgs e)
         {
             // アプリケーションのスタートアップで実行するコードです
-            fileLoggerRoller = new FileLoggerRoller();
+            fileLoggerRoller = new TickRoller();
             System.Diagnostics.Trace.WriteLine("Application_Start");
         }
 

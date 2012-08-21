@@ -79,6 +79,18 @@ namespace WebToolboxApp.Modules
         }
 
         /// <summary>
+        /// ログ出力先の相対ディレクトリを示す.
+        /// 実パスにするためにはHostingEnvironment.MapPathを使用すること.
+        /// </summary>
+        public string LogDirectory
+        {
+            get
+            {
+                return _baseName;
+            }
+        }
+
+        /// <summary>
         /// ログファイルを現在日時で作成する.
         /// すでに開かれている場合はファイルは一旦閉じられる.
         /// ファイルは読み書き共有モードで開かれる.
