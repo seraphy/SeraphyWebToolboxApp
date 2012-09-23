@@ -1,12 +1,12 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebToolboxApp", "WebToolboxApp\WebToolboxApp.csproj", "{4961CCE0-9BD0-4CB4-B7FB-4C67A1409957}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A035A859-7D57-40B9-B75D-B272C41FA385}"
 	ProjectSection(SolutionItems) = preProject
 		README.txt = README.txt
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebToolboxApp", "WebToolboxApp\WebToolboxApp.csproj", "{4961CCE0-9BD0-4CB4-B7FB-4C67A1409957}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

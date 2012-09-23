@@ -13,8 +13,21 @@ namespace WebToolboxApp
 {
     public class Global : System.Web.HttpApplication
     {
+        /// <summary>
+        /// ロガー
+        /// </summary>
+        private TraceSource AppLog = new TraceSource("AppLog");
+
+        /// <summary>
+        /// 定期ローラー
+        /// </summary>
         private TickRoller fileLoggerRoller;
 
+        /// <summary>
+        /// アプリケーションの開始時
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Application_Start(object sender, EventArgs e)
         {
             // アプリケーションのスタートアップで実行するコードです
@@ -22,12 +35,61 @@ namespace WebToolboxApp
             System.Diagnostics.Trace.WriteLine("Application_Start");
         }
 
+        /// <summary>
+        /// アプリケーションの終了時
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void Application_End(object sender, EventArgs e)
         {
             //  アプリケーションのシャットダウンで実行するコードです
             System.Diagnostics.Trace.WriteLine("Application_End");
         }
 
+        /// <summary>
+        /// ASP.NET が要求に応答するときに、実行の HTTP パイプライン チェインの
+        /// 最初のイベントとして発生します。
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        public void Application_BeginRequest(object source, EventArgs e)
+        {
+            // リクエスト開始時のログ
+            if (AppLog.Switch.ShouldTrace(TraceEventType.Start))
+            {
+                HttpContext context = HttpContext.Current;
+                HttpRequest req = context.Request;
+
+                AppLog.TraceEvent(TraceEventType.Start, 1001,
+                    "BEGIN REQUEST: " + req.RawUrl);
+            }
+        }
+
+        /// <summary>
+        /// ASP.NET が要求に応答するときに、実行の HTTP パイプライン チェインの
+        /// 最後のイベントとして発生します。
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
+        public void Application_EndRequest(object source, EventArgs e)
+        {
+            // リクエスト完了時のログ
+            if (AppLog.Switch.ShouldTrace(TraceEventType.Stop))
+            {
+                HttpContext context = HttpContext.Current;
+                HttpRequest req = context.Request;
+
+                // リクエスト開始から完了までにかかった時間をログに記録する.
+                DateTime beginProcessDt = context.Timestamp;
+                var now = DateTime.Now;
+                TimeSpan consumeTime = now - beginProcessDt;
+
+                AppLog.TraceEvent(TraceEventType.Stop, 1002,
+                    "END REQUEST(経過時間:" + consumeTime + "):" + req.RawUrl);
+            }
+        }
+
+        
         /// <summary>
         /// エラー発生時,
         /// ただしWebMethodでの例外は、ここではハンドルされない.
@@ -44,15 +106,23 @@ namespace WebToolboxApp
                 // エラーのロギング
                 try
                 {
-                    // ロガー
-                    var AppLog = new TraceSource("AppLog");
-
                     // リクエストURI
-                    var uri = HttpContext.Current.Request.Url;
-                    if (uri != null)
+                    var context = HttpContext.Current;
+                    if (context != null)
                     {
-                        AppLog.TraceEvent(TraceEventType.Critical, 600,
-                            "error location=" + uri.ToString());
+                        try
+                        {
+                            var uri = context.Request.Url;
+                            if (uri != null)
+                            {
+                                AppLog.TraceEvent(TraceEventType.Critical, 600,
+                                    "error location=" + uri.ToString());
+                            }
+                        }
+                        catch
+                        {
+                            // 無視する.
+                        }
                     }
 
                     // すべてのハンドルされていない例外をログに記録する
@@ -94,7 +164,6 @@ namespace WebToolboxApp
             {
                 var identity = Context.User.Identity;
                 var name = identity.Name ?? "";
-                System.Diagnostics.Debug.Write("loginId=" + name);
                 if (name == "ADMIN")
                 {
                     var roles = new String[] { "ADMIN" };

@@ -43,7 +43,7 @@ namespace WebToolboxApp.Admin
                 if (fileLogger != null)
                 {
                     string path = HostingEnvironment.MapPath(fileLogger.LogDirectory);
-                    return Path.GetDirectoryName(path);
+                    return Path.GetFullPath(Path.GetDirectoryName(path));
                 }
             }
             return null;
@@ -94,13 +94,21 @@ namespace WebToolboxApp.Admin
         private void DoDownload(string fileName)
         {
             string logDir = GetLogDirectory();
-            if (string.IsNullOrEmpty(logDir))
+            if (string.IsNullOrWhiteSpace(logDir) || string.IsNullOrWhiteSpace(fileName))
             {
                 return;
             }
 
             fileName = fileName.Replace("/", "_").Replace("\\", "_").Replace(":", "_");
-            string path = Path.Combine(logDir, fileName);
+            string path = Path.GetFullPath(Path.Combine(logDir, fileName));
+            if (!path.StartsWith(logDir))
+            {
+                AppLog.TraceEvent(TraceEventType.Warning, 403, "不正なパスが要求されました。: " + fileName);
+                Response.StatusCode = 403; // Forbidden
+                Response.End();
+                return;
+            }
+
             if (File.Exists(path))
             {
                 var fileInfo = new FileInfo(path);
@@ -159,6 +167,17 @@ namespace WebToolboxApp.Admin
         /// <param name="e"></param>
         protected void PurgeButton_Command(object sender, CommandEventArgs e)
         {
+            // 現在のログをクローズする.
+            foreach (System.Diagnostics.TraceListener l in System.Diagnostics.Trace.Listeners)
+            {
+                var fileLogger = l as FileLogger;
+                if (fileLogger != null)
+                {
+                    fileLogger.Close();
+                }
+            }
+
+            // 期限切れのものを削除する.
             string logDir = GetLogDirectory();
             if (!string.IsNullOrEmpty(logDir))
             {

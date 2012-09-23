@@ -9,6 +9,7 @@ using System.Threading;
 using System.Configuration;
 using System.Web.Configuration;
 using System.Web.Hosting;
+using System.Net;
 
 namespace WebToolboxApp.Modules
 {
@@ -242,8 +243,12 @@ namespace WebToolboxApp.Modules
                     _wr.Flush();
 
                     // ファイルを開いておく維持時間
-                    TimeSpan keepOpenTime = TimeSpan.Parse(
-                        WebConfigurationManager.AppSettings["KeepLogOpenTime"]);
+                    TimeSpan keepOpenTime;
+                    string keepLogOpenTime = WebConfigurationManager.AppSettings["KeepLogOpenTime"];
+                    if (!TimeSpan.TryParse(keepLogOpenTime, out keepOpenTime))
+                    {
+                        keepOpenTime = TimeSpan.FromMinutes(10);
+                    }
 
                     // 最後の書き込み以降、一定時間経過していたら
                     // ファイルを閉じる
@@ -350,37 +355,24 @@ namespace WebToolboxApp.Modules
             var buf = new StringBuilder();
 
             // 日付
-            if (TraceOutputOptions.HasFlag(TraceOptions.DateTime))
-            {
-                buf.Append(DateTime.Now.ToString());
-                buf.Append(" # ");
-            }
-            // タイムスタンプ
-            if (TraceOutputOptions.HasFlag(TraceOptions.Timestamp))
-            {
-                buf.Append("(");
-                buf.Append(System.Diagnostics.Stopwatch.GetTimestamp());
-                buf.Append(") ");
-            }
+            buf.Append(DateTime.Now.ToString());
+            buf.Append(" # ");
+
             // プロセスID
-            if (TraceOutputOptions.HasFlag(TraceOptions.ThreadId))
-            {
-                buf.Append("P");
-                buf.Append(Process.GetCurrentProcess().Id);
-                buf.Append(" # ");
-            }
+            buf.Append("P");
+            buf.Append(Process.GetCurrentProcess().Id);
+            buf.Append(" # ");
+
             // スレッドID
-            if (TraceOutputOptions.HasFlag(TraceOptions.ThreadId))
-            {
-                buf.Append("T");
-                buf.Append(Thread.CurrentThread.ManagedThreadId);
-                buf.Append(" # ");
-            }
+            buf.Append("T");
+            buf.Append(Thread.CurrentThread.ManagedThreadId);
+            buf.Append(" # ");
 
             // コンテキストに関連する情報を取得する.
             // リクエストと直接関連ない初期化等の呼び出しでは
             // コンテキストのアクセスは無効となり例外が発生するためtryで囲む.
             string remoteAddr = "not-related";
+            string hostName = "";
             String userName = "";
             string handlerName = "";
             HttpContext context = HttpContext.Current;
@@ -406,6 +398,27 @@ namespace WebToolboxApp.Modules
                         proxyRemoteAddresses.Where(
                             addr => !string.IsNullOrWhiteSpace(addr)
                         ).ToArray());
+
+                    // 代表するIP
+                    string primaryIp = proxyRemoteAddresses.Reverse()
+                        .Where(ip => !string.IsNullOrWhiteSpace(ip))
+                        .FirstOrDefault();
+                    if (!string.IsNullOrWhiteSpace(primaryIp))
+                    {
+                        try
+                        {
+                            IPHostEntry hostEntry = Dns.GetHostEntry(primaryIp);
+                            if (hostEntry != null)
+                            {
+                                hostName = hostEntry.HostName;
+                            }
+                        }
+                        catch
+                        {
+                            hostName = "error";
+                        }
+                    }
+
 
                      // ログインユーザ名の表示
                     var user = context.User;
@@ -433,7 +446,9 @@ namespace WebToolboxApp.Modules
 
             buf.Append("IP:");
             buf.Append(remoteAddr);
-            buf.Append(" # ");
+            buf.Append("(");
+            buf.Append(hostName);
+            buf.Append(") # ");
 
             buf.Append("User:");
             buf.Append(userName);
