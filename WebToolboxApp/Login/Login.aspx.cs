@@ -165,6 +165,7 @@ namespace WebToolboxApp.Login
                 {
                     if (info.ErrorCount >= MAX_RETRY)
                     {
+                        //Response.TrySkipIisCustomErrors = true;
                         Response.StatusCode = 401; // 権限なし
                         Response.End();
                         return;

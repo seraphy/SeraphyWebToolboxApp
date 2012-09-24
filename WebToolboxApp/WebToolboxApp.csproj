@@ -175,6 +175,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Properties\PublishProfiles\expressweb.pubxml" />
     <None Include="Properties\PublishProfiles\seraphyware.biz.pubxml" />
   </ItemGroup>
   <PropertyGroup>
