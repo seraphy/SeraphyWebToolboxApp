@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Admin\Default.aspx" />
+    <Content Include="Admin\GenRandom.aspx" />
     <Content Include="Admin\LogView.aspx" />
     <Content Include="ConvColumnName.aspx" />
     <Content Include="ConvInsertDML.aspx" />
@@ -98,6 +99,13 @@
     </Compile>
     <Compile Include="Admin\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\GenRandom.aspx.cs">
+      <DependentUpon>GenRandom.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Admin\GenRandom.aspx.designer.cs">
+      <DependentUpon>GenRandom.aspx</DependentUpon>
     </Compile>
     <Compile Include="Admin\LogView.aspx.cs">
       <DependentUpon>LogView.aspx</DependentUpon>
