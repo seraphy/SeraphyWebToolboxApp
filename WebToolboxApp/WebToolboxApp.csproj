@@ -74,6 +74,7 @@
     <Content Include="err\err404.html" />
     <Content Include="err\err500.html" />
     <Content Include="Login\Login.aspx" />
+    <Content Include="SqlEnclosure.aspx" />
     <Content Include="Styles\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
@@ -148,6 +149,13 @@
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
     <Compile Include="Modules\StringUtils.cs" />
+    <Compile Include="SqlEnclosure.aspx.cs">
+      <DependentUpon>SqlEnclosure.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SqlEnclosure.aspx.designer.cs">
+      <DependentUpon>SqlEnclosure.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

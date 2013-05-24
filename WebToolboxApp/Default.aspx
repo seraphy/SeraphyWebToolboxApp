@@ -13,5 +13,8 @@
         <li>
             <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="~/ConvColumnName.aspx" Text="DBカラム名→CamelStyleプロパティ名変換"/>
         </li>
+        <li>
+            <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/SqlEnclosure.aspx" Text="SQL←→VBScript文字列変数加工"/>
+        </li>
     </ul>
 </asp:Content>
