@@ -26,6 +26,22 @@ namespace WebToolboxApp.Modules
     public class FileLogger : System.Diagnostics.TraceListener, IRollerListener
     {
         /// <summary>
+        /// ホスト名を索引した結果のキャッシュエントリ
+        /// </summary>
+        private class HostNameEntry
+        {
+            /// <summary>
+            /// ホスト名
+            /// </summary>
+            public String hostName { get; set; }
+
+            /// <summary>
+            /// 無効になる日時
+            /// </summary>
+            public DateTime expireDate;
+        }
+
+        /// <summary>
         /// デフォルトの有効期限日は15日
         /// </summary>
         internal const int DEFAULT_EXPIRE_LOG_DAYS = 15;
@@ -39,6 +55,12 @@ namespace WebToolboxApp.Modules
         /// 排他制御用
         /// </summary>
         private readonly object lockObj = new object();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private IDictionary<string, HostNameEntry> hostNameCache
+            = new Dictionary<string, HostNameEntry>();
 
         /// <summary>
         /// 設定上のアプリケーション相対のログファイル名
@@ -403,22 +425,7 @@ namespace WebToolboxApp.Modules
                     string primaryIp = proxyRemoteAddresses.Reverse()
                         .Where(ip => !string.IsNullOrWhiteSpace(ip))
                         .FirstOrDefault();
-                    if (!string.IsNullOrWhiteSpace(primaryIp))
-                    {
-                        try
-                        {
-                            IPHostEntry hostEntry = Dns.GetHostEntry(primaryIp);
-                            if (hostEntry != null)
-                            {
-                                hostName = hostEntry.HostName;
-                            }
-                        }
-                        catch
-                        {
-                            hostName = "error";
-                        }
-                    }
-
+                    hostName = lookupHostName(primaryIp);
 
                      // ログインユーザ名の表示
                     var user = context.User;
@@ -459,6 +466,66 @@ namespace WebToolboxApp.Modules
             buf.Append(" # ");
 
             return buf;
+        }
+
+        /// <summary>
+        /// IPアドレスからホスト名を取得する.
+        /// すでに取得済みの場合はキャッシュより返される.
+        /// IPアドレスがnullまたは空の場合は、そのまま返される.
+        /// </summary>
+        /// <param name="primaryIp">IPアドレス</param>
+        /// <returns>ホスト名</returns>
+        private String lookupHostName(string primaryIp)
+        {
+            lock (hostNameCache)
+            {
+                DateTime now = DateTime.Now;
+
+                // キャッシュの検索
+                HostNameEntry entry = null;
+                if (hostNameCache.TryGetValue(primaryIp, out entry))
+                {
+                    if (entry.expireDate > now)
+                    {
+                        // 有効なキャッシュであれば、その値を返す.
+                        return entry.hostName;
+                    }
+                }
+
+                // DNSの索引
+                string hostName = primaryIp;
+                if (!string.IsNullOrWhiteSpace(primaryIp))
+                {
+                    try
+                    {
+                        IPHostEntry hostEntry = Dns.GetHostEntry(primaryIp);
+                        if (hostEntry != null)
+                        {
+                            hostName = hostEntry.HostName;
+                        }
+                    }
+                    catch
+                    {
+                        hostName = "error";
+                    }
+                }
+
+                // 期限切れのエントリを削除する.
+                var toRemove = hostNameCache.Where(pair => pair.Value.expireDate <= now)
+                    .Select(pair => pair.Key).ToList();
+                foreach (string ip in toRemove)
+                {
+                    hostNameCache.Remove(ip);
+                }
+
+                // 新しくキャッシュに入れる.
+                hostNameCache[primaryIp] = new HostNameEntry() {
+                        hostName = hostName,
+                        expireDate = DateTime.Now + TimeSpan.FromHours(1) // 1時間後に期限
+                    };
+
+                return hostName;
+            }
         }
 
         /// <summary>

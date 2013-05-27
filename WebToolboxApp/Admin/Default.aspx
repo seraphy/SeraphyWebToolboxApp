@@ -13,6 +13,6 @@
 <h1>Administration</h1>
 <ul>
     <li><a href="LogView.aspx">LogView</a></li>
-    <li><a href="GenRandom.aspx">ランダムジェネレータ</a></li>
+    <li><a href="GenRandom.aspx">ランダムデータ生成</a></li>
 </ul>
 </asp:Content>

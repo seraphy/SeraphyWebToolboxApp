@@ -28,6 +28,7 @@
                         </asp:MenuItem>
                         <asp:MenuItem NavigateUrl="~/Admin/Default.aspx" Text="管理">
                             <asp:MenuItem NavigateUrl="~/Admin/LogView.aspx" Text="ログ" />
+                            <asp:MenuItem NavigateUrl="~/Admin/GenRandom.aspx" Text="ランダムデータ生成" />
                         </asp:MenuItem>
                     </Items>
                 </asp:Menu>
