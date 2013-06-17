@@ -16,5 +16,8 @@
         <li>
             <asp:HyperLink ID="HyperLink4" runat="server" NavigateUrl="~/SqlEnclosure.aspx" Text="SQL←→VBScript文字列変数加工"/>
         </li>
+        <li>
+            <asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/SQLServerTblSizing.aspx" Text="SQLServerテーブルサイジング計算"/>
+        </li>
     </ul>
 </asp:Content>

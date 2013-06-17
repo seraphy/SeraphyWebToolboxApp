@@ -76,6 +76,7 @@
     <Content Include="err\err500.html" />
     <Content Include="Login\Login.aspx" />
     <Content Include="SqlEnclosure.aspx" />
+    <Content Include="SQLServerTblSizing.aspx" />
     <Content Include="Styles\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
@@ -164,6 +165,13 @@
     <Compile Include="SqlEnclosure.aspx.designer.cs">
       <DependentUpon>SqlEnclosure.aspx</DependentUpon>
     </Compile>
+    <Compile Include="SQLServerTblSizing.aspx.cs">
+      <DependentUpon>SQLServerTblSizing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SQLServerTblSizing.aspx.designer.cs">
+      <DependentUpon>SQLServerTblSizing.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -192,6 +200,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\PublishProfiles\expressweb.pubxml" />
+    <None Include="Properties\PublishProfiles\local.pubxml" />
     <None Include="Properties\PublishProfiles\seraphyware.biz.pubxml" />
   </ItemGroup>
   <PropertyGroup>
