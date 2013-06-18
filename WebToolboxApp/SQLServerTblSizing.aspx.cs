@@ -144,10 +144,10 @@ namespace WebToolboxApp
 
             // 定義
             var keyDefs = new List<String>();
-            int Num_Cols = 0;
-            int Fixed_Data_Size = 0;
-            int Num_Variable_Cols = 0;
-            int Max_Var_Size = 0;
+            long Num_Cols = 0;
+            long Fixed_Data_Size = 0;
+            long Num_Variable_Cols = 0;
+            long Max_Var_Size = 0;
 
             var buf = new StringBuilder();
 
@@ -212,20 +212,20 @@ namespace WebToolboxApp
                 Num_Cols++;
             }
 
-            int Null_Bitmap = 2 + ((Num_Cols + 7) / 8);
-            int Variable_Data_Size = 2 + (Num_Variable_Cols * 2) + Max_Var_Size;
-            int Row_Size = Fixed_Data_Size + Variable_Data_Size + Null_Bitmap + 4;
+            long Null_Bitmap = 2 + ((Num_Cols + 7) / 8);
+            long Variable_Data_Size = 2 + (Num_Variable_Cols * 2) + Max_Var_Size;
+            long Row_Size = Fixed_Data_Size + Variable_Data_Size + Null_Bitmap + 4;
 
-            int Rows_Per_Page = 8096 / (Row_Size + 2);
+            long Rows_Per_Page = 8096 / (Row_Size + 2);
 
-            int Fill_Factor = 100;
-            int.TryParse(TxtFillFactor.Text, out Fill_Factor);
+            long Fill_Factor = 100;
+            long.TryParse(TxtFillFactor.Text, out Fill_Factor);
 
-            int Free_Rows_Per_Page = 8096 * ((100 - Fill_Factor) / 100) / (Row_Size + 2);
+            long Free_Rows_Per_Page = 8096 * ((100 - Fill_Factor) / 100) / (Row_Size + 2);
 
-            int Num_Leaf_Pages = (int) Math.Floor(Num_Rows / (double)(Rows_Per_Page - Free_Rows_Per_Page ));
+            long Num_Leaf_Pages = (long) Math.Floor(Num_Rows / (double)(Rows_Per_Page - Free_Rows_Per_Page));
 
-            int Leaf_space_used = 8192 * Num_Leaf_Pages;
+            long Leaf_space_used = 8192 * Num_Leaf_Pages;
 
             buf.AppendLine();
             buf.AppendLine("*result");
@@ -234,25 +234,25 @@ namespace WebToolboxApp
             buf.AppendLine("Require Size=" + Leaf_space_used);
 
             // キーサイズ
-            int keySize = parseKeyDefs(keyDefs, Num_Leaf_Pages, buf);
+            long keySize = parseKeyDefs(keyDefs, Num_Leaf_Pages, buf);
 
             // 合計
-            int total = Leaf_space_used + keySize;
+            long total = Leaf_space_used + keySize;
             buf.AppendLine("*total");
             buf.AppendLine("total=" + String.Format("{0:#,0} bytes", total));
 
             TxtResult.Text = buf.ToString();
         }
 
-        private int parseKeyDefs(IList<String> keyDefs, int Num_Leaf_Pages, StringBuilder buf)
+        private long parseKeyDefs(IList<String> keyDefs, long Num_Leaf_Pages, StringBuilder buf)
         {
             buf.AppendLine();
             buf.AppendLine("*index size");
 
-            int Num_Key_Cols = 0;
-            int Fixed_Key_Size = 0;
-            int Num_Variable_Key_Cols = 0;
-            int Max_Var_Key_Size = 0;
+            long Num_Key_Cols = 0;
+            long Fixed_Key_Size = 0;
+            long Num_Variable_Key_Cols = 0;
+            long Max_Var_Key_Size = 0;
 
             foreach (String key in keyDefs)
             {
@@ -281,24 +281,24 @@ namespace WebToolboxApp
 
             // null可の列
             // Index_Null_Bitmap = 2 + ((インデックス行の列数 + 7) / 8)
-            int Index_Null_Bitmap = 0;
+            long Index_Null_Bitmap = 0;
 
 
-            int Variable_Key_Size = 2 + (Num_Variable_Key_Cols * 2) + Max_Var_Key_Size;
-            
-            int Index_Row_Size = Fixed_Key_Size + Variable_Key_Size + Index_Null_Bitmap + 1;
+            long Variable_Key_Size = 2 + (Num_Variable_Key_Cols * 2) + Max_Var_Key_Size;
 
-            int Index_Rows_Per_Page = 8096 / (Index_Row_Size + 2);
+            long Index_Row_Size = Fixed_Key_Size + Variable_Key_Size + Index_Null_Bitmap + 1;
 
-            int Non_leaf_Levels = (int)Math.Floor(1 + Math.Log(Index_Rows_Per_Page, (Num_Leaf_Pages / Index_Rows_Per_Page)));
+            long Index_Rows_Per_Page = 8096 / (Index_Row_Size + 2);
 
-            int Num_Index_Pages = 0;
+            long Non_leaf_Levels = (long)Math.Floor(1 + Math.Log(Index_Rows_Per_Page, (Num_Leaf_Pages / Index_Rows_Per_Page)));
+
+            long Num_Index_Pages = 0;
             for (int lv = 1; lv <= Non_leaf_Levels; lv++)
             {
-                Num_Index_Pages += (int)(Num_Leaf_Pages / (Math.Pow(Index_Rows_Per_Page, lv)));
+                Num_Index_Pages += (long)(Num_Leaf_Pages / (Math.Pow(Index_Rows_Per_Page, lv)));
             }
 
-            int Index_Space_Used = 8192 * Num_Index_Pages;
+            long Index_Space_Used = 8192 * Num_Index_Pages;
 
             buf.AppendLine("Index_Row_Size=" + Index_Row_Size);
             buf.AppendLine("Index_Space_Used=" + Index_Space_Used);
