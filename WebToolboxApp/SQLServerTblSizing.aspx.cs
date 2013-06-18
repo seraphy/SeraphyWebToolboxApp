@@ -94,11 +94,31 @@ namespace WebToolboxApp
             }
 
             int len = 0;
-            if (int.TryParse(precStr, out len))
-            {
-                return len;
+            int.TryParse(precStr, out len);
+
+            int byteLen = 0;
+            if (len <= 0)
+            { 
+                byteLen = 0;
             }
-            return 0;
+            else if (len <= 9)
+            {
+                byteLen = 5;
+            }
+            else if (len <= 19)
+            {
+                byteLen = 9;
+            }
+            else if (len <= 28)
+            {
+                byteLen = 13;
+            }
+            else if (len <= 38)
+            {
+                byteLen = 17;
+            }
+
+            return byteLen;
         }
 
         private static int parseCharColumn(Match mat, out ColumnType typ)
