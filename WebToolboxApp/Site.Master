@@ -26,6 +26,7 @@
                             <asp:MenuItem NavigateUrl="~/ConvColumnName.aspx" Text="DBカラム名→CamelStyleプロパティ名変換" />
                             <asp:MenuItem NavigateUrl="~/SqlEnclosure.aspx" Text="SQL←→VBScript文字列変数加工" />
                             <asp:MenuItem NavigateUrl="~/SQLServerTblSizing.aspx" Text="SQLServerテーブルサイジング計算" />
+                            <asp:MenuItem NavigateUrl="~/HtmlEscape.aspx" Text="HTMLエスケープ" />
                         </asp:MenuItem>
                         <asp:MenuItem NavigateUrl="~/Admin/Default.aspx" Text="管理">
                             <asp:MenuItem NavigateUrl="~/Admin/LogView.aspx" Text="ログ" />

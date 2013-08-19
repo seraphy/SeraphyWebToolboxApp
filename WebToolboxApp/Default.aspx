@@ -19,5 +19,8 @@
         <li>
             <asp:HyperLink ID="HyperLink5" runat="server" NavigateUrl="~/SQLServerTblSizing.aspx" Text="SQLServerテーブルサイジング計算"/>
         </li>
+        <li>
+            <asp:HyperLink ID="HyperLink6" runat="server" NavigateUrl="~/HtmlEscape.aspx" Text="HTMLエスケープ"/>
+        </li>
     </ul>
 </asp:Content>
