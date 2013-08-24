@@ -11,7 +11,10 @@ namespace WebToolboxApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            TxtTabSize.Text = "4";
+            if (!IsPostBack)
+            {
+                TxtTabSize.Text = "4";
+            }
         }
 
         protected void BtnClear_Click(object sender, EventArgs e)
@@ -20,22 +23,40 @@ namespace WebToolboxApp
             TxtSource.Text = "";
         }
 
+        /// <summary>
+        /// 変換する.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         protected void BtnCalcurate_Click(object sender, EventArgs e)
         {
+            // タブサイズ
             int tabsize = 4;
             int.TryParse(TxtTabSize.Text, out tabsize);
 
+            // 変換モード
             string mode = DrpConvertMode.SelectedValue;
 
+            // 対象テキスト
             string src = TxtSource.Text;
 
-            // タブの単純なスペースへの置き換え、インデント考慮なし
-            string tabspc = " ";
-            for (int idx = 1; idx < tabsize; idx++)
-            {
-                tabspc += " ";
-            }
-            string dest = src.Replace("\t", tabspc);
+            // タブ展開
+            string dest = src;
+            dest = expandTab(dest, tabsize);
+            dest = escapeHTML(dest, mode);
+
+            TxtResult.Text = dest;
+        }
+
+        /// <summary>
+        /// HTML, XMLのエスケープを行う.
+        /// </summary>
+        /// <param name="src">対象文字列</param>
+        /// <param name="mode">変換モード</param>
+        /// <returns></returns>
+        protected string escapeHTML(string src, string mode)
+        {
+            string dest = src;
 
             // 変換
             if (mode == "Full" || mode == "XML")
@@ -46,11 +67,19 @@ namespace WebToolboxApp
                 dest = dest.Replace(">", "&lt;");
                 dest = dest.Replace("\"", "&quot;");
             }
-            else
+            else if (mode == "Simple")
             {
                 // 最低限
                 dest = dest.Replace("&", "&amp;");
                 dest = dest.Replace("<", "&gt;");
+            }
+            else if (mode == "None")
+            {
+                // なにもしない
+            }
+            else
+            {
+                throw new ArgumentException("不明なモード: " + mode);
             }
 
             if (mode == "XML")
@@ -58,8 +87,53 @@ namespace WebToolboxApp
                 // XML(aposも含む)
                 dest = dest.Replace("'", "&apos;");
             }
+            return dest;
+        }
 
-            TxtResult.Text = dest;
+        /// <summary>
+        /// タブを展開する.
+        /// </summary>
+        /// <param name="text">展開するテキスト</param>
+        /// <param name="tabsize">タブ幅</param>
+        /// <returns></returns>
+        protected string expandTab(string text, int tabsize)
+        {
+            if (tabsize < 1)
+            {
+                // タブサイズが1以下ならば変換しない.
+                return text;
+            }
+
+            var buf = new System.Text.StringBuilder();
+
+            int col = 0;
+
+            int len = text.Length;
+            for (int idx = 0; idx < len; idx++)
+            {
+                char c = text[idx];
+                if (c == '\r' || c == '\n')
+                {
+                    col = 0;
+                    buf.Append(c);
+                }
+                else if (c == '\t')
+                {
+                    int nextcol = (((col + 1) / tabsize) + 1) * tabsize;
+                    for (; col < nextcol; col++)
+                    {
+                        buf.Append(' ');
+                    }
+                }
+                else
+                {
+                    int charsiz = System.Text.Encoding.UTF8.GetByteCount(new char[] { c });
+                    col += (charsiz > 1) ? 2 : 1; // ASCII以外は2バイトとみなす. (半角カナは無視)
+                    buf.Append(c);
+                }
+            }
+
+            return buf.ToString();
         }
     }
 }

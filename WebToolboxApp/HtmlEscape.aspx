@@ -24,12 +24,17 @@
     <div>
         <span>Tab Size:<asp:TextBox ID="TxtTabSize" Width="50" runat="server"></asp:TextBox></span>
         <span>Mode: <asp:DropDownList ID="DrpConvertMode" runat="server">
+            <asp:ListItem>None</asp:ListItem>
             <asp:ListItem>Simple</asp:ListItem>
             <asp:ListItem>Full</asp:ListItem>
             <asp:ListItem>XML</asp:ListItem>
         </asp:DropDownList></span>
         <asp:Button ID="BtnCalcurate" runat="server" Text="Convert" OnClick="BtnCalcurate_Click" />
         <asp:Button ID="BtnClear" runat="server" Text="Clear" OnClick="BtnClear_Click" />
+    </div>
+    <div>
+        ※ タブサイズが0の場合はタブ変換はしない.
+        ※ (非ASCIIは全角とみなす。半角カタカナは無視する)
     </div>
     <div>
         <asp:TextBox
