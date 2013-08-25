@@ -9,6 +9,8 @@ using System.Security.Cryptography;
 using System.Web.Security;
 using System.Collections.Concurrent;
 using System.Diagnostics;
+using System.Web.Configuration;
+using System.Data.SqlServerCe;
 
 namespace WebToolboxApp.Login
 {
@@ -201,22 +203,40 @@ namespace WebToolboxApp.Login
                 }
 
                 var userName = UserName.Text;
-                if ("ADMIN" == userName)
+                if (!string.IsNullOrWhiteSpace(userName))
                 {
                     SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
-                    string password = "hello";
-                    byte[] passwordWithSalt = Encoding.UTF8.GetBytes(strSalt + "@" + password);
-                    byte[] result = sha1.ComputeHash(passwordWithSalt);
+                    string password;
 
-                    bool matched = result.SequenceEqual(hash);
-                    if (matched)
+                    // データベースよりパスワードを取得する.
+                    string connstr = WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+                    using (var conn = new SqlCeConnection(connstr))
+                    using (var command = conn.CreateCommand())
                     {
-                        AppLog.TraceEvent(TraceEventType.Information, 100, "認可されました。");
-                        // 認証OK
-                        //FormsAuthentication.SetAuthCookie(userName, false);
-                        //Response.Redirect("~/Admin/Default.aspx", true);
-                        FormsAuthentication.RedirectFromLoginPage(userName, false);
-                        return;
+                        command.Connection = conn;
+                        command.CommandText = "select password from users where user_name = @userName";
+                        command.Parameters.AddWithValue("userName", userName);
+
+                        conn.Open();
+                        password = (string)command.ExecuteScalar() ?? "";
+                    }
+
+                    // パスワードの検証
+                    if (!string.IsNullOrWhiteSpace(password))
+                    {
+                        byte[] passwordWithSalt = Encoding.UTF8.GetBytes(strSalt + "@" + password);
+                        byte[] result = sha1.ComputeHash(passwordWithSalt);
+
+                        bool matched = result.SequenceEqual(hash);
+                        if (matched)
+                        {
+                            AppLog.TraceEvent(TraceEventType.Information, 100, "認可されました。");
+                            // 認証OK
+                            //FormsAuthentication.SetAuthCookie(userName, false);
+                            //Response.Redirect("~/Admin/Default.aspx", true);
+                            FormsAuthentication.RedirectFromLoginPage(userName, false);
+                            return;
+                        }
                     }
                 }
 
