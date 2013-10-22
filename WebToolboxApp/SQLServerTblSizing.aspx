@@ -36,4 +36,5 @@
             Rows="15"
           ></asp:TextBox>
     </div>
+    <p><a href="http://msdn.microsoft.com/ja-jp/library/ms178085.aspx">※ msdn:クラスター化インデックスのサイズの見積もり</a></p>
 </asp:Content>
