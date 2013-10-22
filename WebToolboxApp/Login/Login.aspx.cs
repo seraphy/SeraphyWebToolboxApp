@@ -206,19 +206,12 @@ namespace WebToolboxApp.Login
                 if (!string.IsNullOrWhiteSpace(userName))
                 {
                     SHA1CryptoServiceProvider sha1 = new SHA1CryptoServiceProvider();
-                    string password;
+                    string password = "";
 
-                    // データベースよりパスワードを取得する.
-                    string connstr = WebConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-                    using (var conn = new SqlCeConnection(connstr))
-                    using (var command = conn.CreateCommand())
+                    MembershipUser user = Membership.GetUser(userName, true);
+                    if (user != null)
                     {
-                        command.Connection = conn;
-                        command.CommandText = "select password from users where user_name = @userName";
-                        command.Parameters.AddWithValue("userName", userName);
-
-                        conn.Open();
-                        password = (string)command.ExecuteScalar() ?? "";
+                        password = user.GetPassword();
                     }
 
                     // パスワードの検証

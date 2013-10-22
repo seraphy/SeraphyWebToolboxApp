@@ -9,6 +9,7 @@ using System.Web.Hosting;
 using System.IO;
 using System.Text;
 using System.Diagnostics;
+using System.Security.Permissions;
 
 namespace WebToolboxApp.Admin
 {
@@ -27,6 +28,9 @@ namespace WebToolboxApp.Admin
             if (!IsPostBack)
             {
                 initFileList();
+
+                // ログの削除権限がなければボタンはディセーブルとする
+                PurgeButton.Enabled = Page.User.IsInRole("LOG_PURGE");
             }
         }
 
@@ -162,9 +166,11 @@ namespace WebToolboxApp.Admin
 
         /// <summary>
         /// 削除可能なログファイルをすべて削除する.
+        /// 削除権限がない場合は実行時エラーとなる.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
+        [PrincipalPermission(SecurityAction.Demand, Role = "LOG_PURGE")]
         protected void PurgeButton_Command(object sender, CommandEventArgs e)
         {
             // 現在のログをクローズする.

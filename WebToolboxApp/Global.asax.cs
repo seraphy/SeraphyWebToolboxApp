@@ -157,20 +157,18 @@ namespace WebToolboxApp
 
         }
 
-        void Application_PostAuthenticateRequest(object sender, EventArgs e)
-        {
-            // 現在ログインしているユーザIDを取得
-            if (Context.Request.IsAuthenticated)
-            {
-                var identity = Context.User.Identity;
-                var name = identity.Name ?? "";
-                if (name == "ADMIN")
-                {
-                    var roles = new String[] { "ADMIN" };
-                    Context.User = new GenericPrincipal(identity, roles);
-                    Thread.CurrentPrincipal = Context.User;
-                }
-            }
-        }
+        // ※ セキュリティプロバイダのメンバーシップとロールマネージャを使用するため、以下のコードは不要
+        //void Application_PostAuthenticateRequest(object sender, EventArgs e)
+        //{
+        //    // 現在ログインしているユーザIDを取得
+        //    if (Context.Request.IsAuthenticated)
+        //    {
+        //        var identity = Context.User.Identity;
+        //        string[] roles = Roles.GetRolesForUser();
+
+        //        //Context.User = new GenericPrincipal(identity, roles);
+        //        //Thread.CurrentPrincipal = Context.User;
+        //    }
+        //}
     }
 }
