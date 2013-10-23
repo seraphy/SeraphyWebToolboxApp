@@ -192,7 +192,7 @@ namespace WebToolboxApp.Login
                 // フォームからポストバックされた場合、
                 // パスワードを検証する.
                 string strHash = HashedPassword.Value;
-                byte[] hash = Convert.FromBase64String(strHash);
+                byte[] hash = LoginUtils.StringToByteArray(strHash);
 
                 string strSalt = (Session[PASSWORD_SALT] as string) ?? "";
                 if (strSalt != SALT.Value)
@@ -223,11 +223,9 @@ namespace WebToolboxApp.Login
                         bool matched = result.SequenceEqual(hash);
                         if (matched)
                         {
-                            AppLog.TraceEvent(TraceEventType.Information, 100, "認可されました。");
                             // 認証OK
-                            //FormsAuthentication.SetAuthCookie(userName, false);
-                            //Response.Redirect("~/Admin/Default.aspx", true);
                             FormsAuthentication.RedirectFromLoginPage(userName, false);
+                            AppLog.TraceEvent(TraceEventType.Information, 100, "認可されました。");
                             return;
                         }
                     }

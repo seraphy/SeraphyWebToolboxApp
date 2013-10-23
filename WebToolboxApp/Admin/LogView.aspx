@@ -12,7 +12,8 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <h1>LogView</h1>
     <asp:ListView ID="FileListView" runat="server" 
-        onitemcommand="FileListView_ItemCommand">
+        onitemcommand="FileListView_ItemCommand"
+        ItemType="System.IO.FileInfo">
         <LayoutTemplate>
             <div ID="itemPlaceholderContainer" runat="server" style="">
                 <ul>
@@ -26,13 +27,13 @@
                     ID="FileLinkButton"
                     runat="server"
                     CommandName="Select"
-                    CommandArgument='<%# Eval("Name") %>'
+                    CommandArgument='<%# Item.Name %>'
                     >
-                    <asp:Label ID="FileNameLabel" runat="server" Text='<%# Eval("Name") %>' />
+                    <asp:Label ID="FileNameLabel" runat="server" Text='<%#: Item.Name %>' />
                     &nbsp;
-                    (<asp:Label ID="Label1" runat="server" Text='<%# Eval("LastWriteTime ","{0:D}") %>' />)
+                    (<asp:Label ID="Label1" runat="server" Text='<%#: Item.LastWriteTime.ToString("yyyy/MM/dd HH:mm:ss") %>' />)
                     &nbsp;
-                    (<asp:Label ID="Label2" runat="server" Text='<%# Eval("Length ") %>' />)
+                    (<asp:Label ID="Label2" runat="server" Text='<%#: Item.Length %>' />)
                 </asp:LinkButton>
             </li>
         </ItemTemplate>

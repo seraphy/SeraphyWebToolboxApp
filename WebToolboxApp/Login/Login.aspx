@@ -7,21 +7,25 @@
     %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <%-- http://code.google.com/p/crypto-js/ --%>
-<script type="text/javascript" src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/rollups/sha1.js"></script>
-<script type="text/javascript" src="http://crypto-js.googlecode.com/svn/tags/3.0.2/build/components/enc-base64-min.js"></script>
-<script type="text/javascript">
-    function convPassword() {
-        var pwd = document.getElementById('password').value;
-        var salt = document.getElementById('SALT').value;
-        var hash = CryptoJS.SHA1(salt + '@' + pwd);
-        var strHash = hash.toString(CryptoJS.enc.Base64);
-        document.getElementById('HashedPassword').value = strHash;
-    }
-</script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+
+    <asp:ScriptManagerProxy ID="ScriptManagerProxy1" runat="server">
+        <Scripts>
+            <%-- https://github.com/wwwtyro/cryptico (NEW BSD LICENSE) --%>
+            <asp:ScriptReference Path="~/Scripts/cryptico.min.js" />
+        </Scripts>
+    </asp:ScriptManagerProxy>
+
+    <script type="text/javascript">
+        function convPassword() {
+            var pwd = $('#password').val();
+            var salt = $('#SALT').val();
+            var strHash = SHA1(salt + '@' + pwd);
+            $('#HashedPassword').val(strHash);
+        }
+    </script>
     <asp:HiddenField ID="SALT" ClientIDMode="Static" runat="server" />
     <asp:HiddenField ID="HashedPassword" ClientIDMode="Static" runat="server" />
     <table>
@@ -34,6 +38,7 @@
         <tr>
             <td>password</td>
             <td>
+                <%-- パスワードはサーバーに送信させない --%>
                 <input id="password" type="password" size="20"/>
             </td>
         </tr>

@@ -11,6 +11,11 @@
 </head>
 <body>
     <form runat="server">
+    <asp:ScriptManager ID="ScriptManager1" runat="server">
+        <Scripts>
+            <asp:ScriptReference Path="~/Scripts/jquery-1.4.1.min.js" />
+        </Scripts>
+    </asp:ScriptManager>
     <div class="page">
         <div class="header">
             <div class="title">
@@ -31,6 +36,7 @@
                         <asp:MenuItem NavigateUrl="~/Admin/Default.aspx" Text="管理">
                             <asp:MenuItem NavigateUrl="~/Admin/LogView.aspx" Text="ログ" />
                             <asp:MenuItem NavigateUrl="~/Admin/GenRandom.aspx" Text="ランダムデータ生成" />
+                            <asp:MenuItem NavigateUrl="~/Login/Logout.aspx" Text="ログアウト" />
                         </asp:MenuItem>
                     </Items>
                 </asp:Menu>

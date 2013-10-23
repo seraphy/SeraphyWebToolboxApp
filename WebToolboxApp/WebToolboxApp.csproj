@@ -98,6 +98,8 @@
     <Content Include="err\err500.html" />
     <Content Include="HtmlEscape.aspx" />
     <Content Include="Login\Login.aspx" />
+    <Content Include="Login\Logout.aspx" />
+    <Content Include="Scripts\cryptico.min.js" />
     <Content Include="SqlEnclosure.aspx" />
     <Content Include="SQLServerTblSizing.aspx" />
     <Content Include="Styles\Site.css" />
@@ -192,6 +194,14 @@
     </Compile>
     <Compile Include="Login\Login.aspx.designer.cs">
       <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login\LoginUtils.cs" />
+    <Compile Include="Login\Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login\Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="Modules\FileLogger.cs" />
     <Compile Include="Modules\TickRoller.cs" />
