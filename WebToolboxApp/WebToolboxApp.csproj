@@ -100,6 +100,11 @@
     <Content Include="Login\ChangePassword.aspx" />
     <Content Include="Login\Login.aspx" />
     <Content Include="Login\Logout.aspx" />
+    <Content Include="Scripts\base64.js" />
+    <Content Include="Scripts\jsbn.js" />
+    <Content Include="Scripts\prng4.js" />
+    <Content Include="Scripts\rng.js" />
+    <Content Include="Scripts\rsa.js" />
     <Content Include="Scripts\sha1.js" />
     <Content Include="SqlEnclosure.aspx" />
     <Content Include="SQLServerTblSizing.aspx" />
@@ -118,6 +123,8 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
+    <Content Include="Web.sitemap" />
+    <Content Include="Login\Web.config" />
     <None Include="_bin_deployableAssemblies\x86\sqlcese40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceqp40.dll" />
     <None Include="_bin_deployableAssemblies\x86\sqlceme40.dll" />

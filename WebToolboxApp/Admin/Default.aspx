@@ -14,6 +14,5 @@
 <ul>
     <li><a href="LogView.aspx">LogView</a></li>
     <li><a href="GenRandom.aspx">ランダムデータ生成</a></li>
-    <li><a href="Logout.aspx">ログアウト</a></li>
 </ul>
 </asp:Content>

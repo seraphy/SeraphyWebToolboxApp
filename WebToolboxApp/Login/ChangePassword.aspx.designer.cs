@@ -7,54 +7,63 @@
 // </自動生成>
 //------------------------------------------------------------------------------
 
-namespace WebToolboxApp {
+namespace WebToolboxApp.Login {
     
     
-    public partial class SiteMaster {
+    public partial class ChangePassword {
         
         /// <summary>
-        /// HeadContent コントロール。
+        /// ScriptManagerProxy1 コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder HeadContent;
+        protected global::System.Web.UI.ScriptManagerProxy ScriptManagerProxy1;
         
         /// <summary>
-        /// ScriptManager1 コントロール。
+        /// TxtPublicModules コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.ScriptManager ScriptManager1;
+        protected global::System.Web.UI.WebControls.HiddenField TxtPublicModules;
         
         /// <summary>
-        /// smd コントロール。
+        /// TxtPublicExponent コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.SiteMapDataSource smd;
+        protected global::System.Web.UI.WebControls.HiddenField TxtPublicExponent;
         
         /// <summary>
-        /// NavigationMenu コントロール。
+        /// Message コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Menu NavigationMenu;
+        protected global::System.Web.UI.WebControls.Label Message;
         
         /// <summary>
-        /// MainContent コントロール。
+        /// BtnChangePassword コントロール。
         /// </summary>
         /// <remarks>
         /// 自動生成されたフィールド。
         /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ContentPlaceHolder MainContent;
+        protected global::System.Web.UI.WebControls.Button BtnChangePassword;
+        
+        /// <summary>
+        /// ENCRYPTED_NEW_PASS コントロール。
+        /// </summary>
+        /// <remarks>
+        /// 自動生成されたフィールド。
+        /// 変更するには、フィールドの宣言をデザイナー ファイルから分離コード ファイルに移動します。
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField ENCRYPTED_NEW_PASS;
     }
 }

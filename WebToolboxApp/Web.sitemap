@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+  <siteMapNode title="ホーム" roles="*">
+    <siteMapNode url="Default.aspx" title="ツール" roles="*">
+      <siteMapNode url="~/ConvInsertDML.aspx" title="タブ区切りテキストからのINSERT文生成" />
+      <siteMapNode url="~/ConvColumnName.aspx" title="DBカラム名→CamelStyleプロパティ名変換" />
+      <siteMapNode url="~/SqlEnclosure.aspx" title="SQL←→VBScript文字列変数加工" />
+      <siteMapNode url="~/SQLServerTblSizing.aspx" title="SQLServerテーブルサイジング計算" />
+      <siteMapNode url="~/HtmlEscape.aspx" title="HTMLエスケープ" />
+    </siteMapNode>
+    <siteMapNode url="~/Admin/Default.aspx" title="管理" roles="*">
+      <siteMapNode url="~/Admin/LogView.aspx" title="ログ" roles="*"/>
+      <siteMapNode url="~/Admin/GenRandom.aspx" title="ランダムデータ生成" roles="*"/>
+      <siteMapNode url="~/Login/ChangePassword.aspx" title="パスワードの変更"/>
+      <siteMapNode url="~/Login/Logout.aspx" title="ログアウト"/>
+    </siteMapNode>
+  </siteMapNode>
+</siteMap>
