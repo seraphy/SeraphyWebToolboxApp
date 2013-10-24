@@ -13,8 +13,10 @@
 
     <asp:ScriptManagerProxy ID="ScriptManagerProxy1" runat="server">
         <Scripts>
-            <%-- https://github.com/wwwtyro/cryptico (NEW BSD LICENSE) --%>
-            <asp:ScriptReference Path="~/Scripts/cryptico.min.js" />
+            <%-- http://www-cs-students.stanford.edu/~tjw/jsbn/ (BSD LICENSE)
+                sha1.jsのb64padはRFCに従うため、"="に設定しておくこと.
+            --%>
+            <asp:ScriptReference Path="~/Scripts/sha1.js" />
         </Scripts>
     </asp:ScriptManagerProxy>
 
@@ -22,7 +24,7 @@
         function convPassword() {
             var pwd = $('#password').val();
             var salt = $('#SALT').val();
-            var strHash = SHA1(salt + '@' + pwd);
+            var strHash = b64_sha1(salt + '@' + pwd);
             $('#HashedPassword').val(strHash);
         }
     </script>

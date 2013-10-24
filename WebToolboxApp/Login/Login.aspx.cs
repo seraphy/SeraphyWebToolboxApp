@@ -192,7 +192,7 @@ namespace WebToolboxApp.Login
                 // フォームからポストバックされた場合、
                 // パスワードを検証する.
                 string strHash = HashedPassword.Value;
-                byte[] hash = LoginUtils.StringToByteArray(strHash);
+                byte[] hash = Convert.FromBase64String(strHash);
 
                 string strSalt = (Session[PASSWORD_SALT] as string) ?? "";
                 if (strSalt != SALT.Value)

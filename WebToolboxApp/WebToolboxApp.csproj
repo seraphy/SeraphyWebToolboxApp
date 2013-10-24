@@ -97,9 +97,10 @@
     <Content Include="err\err404.html" />
     <Content Include="err\err500.html" />
     <Content Include="HtmlEscape.aspx" />
+    <Content Include="Login\ChangePassword.aspx" />
     <Content Include="Login\Login.aspx" />
     <Content Include="Login\Logout.aspx" />
-    <Content Include="Scripts\cryptico.min.js" />
+    <Content Include="Scripts\sha1.js" />
     <Content Include="SqlEnclosure.aspx" />
     <Content Include="SQLServerTblSizing.aspx" />
     <Content Include="Styles\Site.css" />
@@ -187,6 +188,13 @@
     </Compile>
     <Compile Include="HtmlEscape.aspx.designer.cs">
       <DependentUpon>HtmlEscape.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login\Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
