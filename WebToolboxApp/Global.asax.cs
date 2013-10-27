@@ -8,6 +8,9 @@ using System.Security.Principal;
 using System.Threading;
 using System.Diagnostics;
 using WebToolboxApp.Modules;
+using System.Web.Profile;
+using System.Configuration;
+using System.Reflection;
 
 namespace WebToolboxApp
 {
@@ -145,7 +148,7 @@ namespace WebToolboxApp
         void Session_Start(object sender, EventArgs e)
         {
             // 新規セッションを開始したときに実行するコードです
-
+            purgeExpiredProfiles();
         }
 
         void Session_End(object sender, EventArgs e)
@@ -170,5 +173,105 @@ namespace WebToolboxApp
         //        //Thread.CurrentPrincipal = Context.User;
         //    }
         //}
+        public void Profile_Personalize(object sender, ProfileEventArgs args)
+        {
+            try
+            {
+                var expiredDateTime = DateTime.Now.AddHours(-1);
+
+                // アクティブでない匿名プロファイルの一覧を取得する.
+                var inactiveProfiles = ProfileManager.GetAllInactiveProfiles(
+                    ProfileAuthenticationOption.Anonymous, expiredDateTime);
+                if (inactiveProfiles.Count > 0)
+                {
+                    // 期限切れのプロファイルを削除する.
+                    ProfileManager.DeleteProfiles(inactiveProfiles);
+                }
+
+                foreach (ProfileInfo profileInfo in inactiveProfiles)
+                {
+                    ProfileManager.DeleteProfile(profileInfo.UserName);
+                }
+
+                // 期限切れの匿名ユーザを削除する.
+                foreach (MembershipUser user in Membership.GetAllUsers())
+                {
+                    System.Diagnostics.Debug.WriteLine(user.UserName);
+                    if (!user.IsApproved)
+                    {
+                        AppLog.TraceEvent(TraceEventType.Information, 100,
+                            "deleteuser: " + user.UserName +
+                            " /lastUse=" + user.LastActivityDate);
+
+                        Membership.DeleteUser(user.UserName);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLog.TraceEvent(TraceEventType.Error, 600,
+                    "期限切れプロファイルの削除に失敗しました。" + ex);
+            }
+        }
+
+        /// <summary>
+        /// 匿名ユーザから特定のユーザにログインされた場合に、
+        /// 匿名ユーザの状態で設定されたプロファイルの内容をマージし、
+        /// 且つ、特定ユーザーのプロファイルとユーザ識別情報を削除する.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
+        public void Profile_OnMigrateAnonymous(object sender, ProfileMigrateEventArgs args)
+        {
+            foreach (ProfileInfo profile in ProfileManager.FindProfilesByUserName(
+                ProfileAuthenticationOption.Anonymous, args.AnonymousID))
+            {
+                if (string.Equals(profile.UserName, args.AnonymousID))
+                {
+                    // 匿名としてのプロファイルの登録内容をログインしたプロファイルに転記する
+                    ProfileBase newProfile = HttpContext.Current.Profile;
+                    ProfileBase oldProfile = ProfileBase.Create(args.AnonymousID, false);
+
+                    foreach (SettingsProperty prop in ProfileBase.Properties)
+                    {
+                        // プロパティ定義一覧とデフォルト値の取得
+                        string propertyName = prop.Name;
+                        object defValue = prop.DefaultValue;
+                        Type defValueType = prop.PropertyType;
+
+                        if (defValue != null && defValueType != null)
+                        {
+                            // デフォルト値は型変換しておく
+                            defValue = Convert.ChangeType(defValue, defValueType);
+                        }
+
+                        // 匿名プロファイルでの設定値
+                        object value = oldProfile.GetPropertyValue(propertyName);
+
+                        if (!object.Equals(defValue, value))
+                        {
+                            // 匿名プロファイルでデフォルト値から設定値を変えていた場合は
+                            // 名前つきプロファイル側に更新内容を反映する.
+                            // (デフォルト値のままであれば以前のものを優先する.)
+                            newProfile.SetPropertyValue(propertyName, value);
+                        }
+                    }
+
+                    // 匿名ユーザのプロファイルとユーザ登録を
+                    // DBおよび セッションから削除します
+                    ProfileManager.DeleteProfile(args.AnonymousID);
+                    AnonymousIdentificationModule.ClearAnonymousIdentifier();
+                    Membership.DeleteUser(args.AnonymousID, true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 期限切れの古い匿名プロファイルを削除する.
+        /// </summary>
+        private void purgeExpiredProfiles()
+        {
+
+        }
     }
 }

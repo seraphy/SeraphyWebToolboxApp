@@ -14,8 +14,14 @@ namespace WebToolboxApp
         {
             if (!Page.IsPostBack)
             {
-                TxtReplaceChars.Text = "@@";
-                TxtPattern.Text = "strSQL = strSQL & \"@@\" & vbCrLf";
+                // プロファイルから前回設定値の読み込み (新規の場合はデフォルト値)
+                var profile = Context.Profile;
+                var profileGroup = profile.GetProfileGroup("SqlEnclosure");
+                var pattern = (string) profileGroup.GetPropertyValue("Pattern");
+                var replaceChars = (string)profileGroup.GetPropertyValue("ReplaceChars");
+
+                TxtReplaceChars.Text = replaceChars;
+                TxtPattern.Text = pattern;
             }
         }
 
@@ -24,11 +30,28 @@ namespace WebToolboxApp
             TxtSource.Text = "";
         }
 
+        /// <summary>
+        /// プロファイルへの設定値の保存
+        /// </summary>
+        /// <param name="replacePattern"></param>
+        /// <param name="replacechars"></param>
+        private void saveProfile(string replacePattern, string replacechars)
+        {
+            // プロファイルから前回設定値の保存
+            var profile = Context.Profile;
+            var profileGroup = profile.GetProfileGroup("SqlEnclosure");
+            profileGroup.SetPropertyValue("Pattern", replacePattern);
+            profileGroup.SetPropertyValue("ReplaceChars", replacechars);
+        }
+
         protected void BtnConvert_Click(object sender, EventArgs e)
         {
             string replacePattern = TxtPattern.Text;
             string replacechars = TxtReplaceChars.Text;
 
+            // プロファイルから前回設定値の保存
+            saveProfile(replacePattern, replacechars);
+ 
             string input = TxtSource.Text;
             var buf = new StringBuilder();
 
@@ -47,6 +70,9 @@ namespace WebToolboxApp
         {
             string replacePattern = TxtPattern.Text;
             string replacechars = TxtReplaceChars.Text;
+
+            // プロファイルから前回設定値の保存
+            saveProfile(replacePattern, replacechars);
 
             string[] patterns = replacePattern.Split(
                 new string[] { replacechars }, StringSplitOptions.None);

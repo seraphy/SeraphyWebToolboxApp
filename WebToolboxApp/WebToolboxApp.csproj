@@ -90,6 +90,7 @@
     <Content Include="Admin\GenRandom.aspx" />
     <Content Include="Admin\LogView.aspx" />
     <Content Include="App_Data\aspnet.sdf" />
+    <Content Include="Config\profile.xml" />
     <Content Include="ConvColumnName.aspx" />
     <Content Include="ConvInsertDML.aspx" />
     <Content Include="err\Default.htm" />
