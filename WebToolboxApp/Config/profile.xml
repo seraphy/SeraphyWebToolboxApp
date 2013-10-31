@@ -9,13 +9,13 @@
   <properties>
     <group name="HtmlEscape">
       <!-- HtmlEscape -->
-      <add name="TabSize" type="System.Int32" defaultValue="8" allowAnonymous="true"/>
-      <add name="Mode" type="System.String" defaultValue="Simple" allowAnonymous="true"/>
+      <add name="TabSize" type="System.Int32" defaultValue="8" />
+      <add name="Mode" type="System.String" defaultValue="Simple" />
     </group>
     <group name="SqlEnclosure">
       <!-- SqlEnclosure -->
-      <add name="ReplaceChars" type="System.String" defaultValue="@@" allowAnonymous="true"/>
-      <add name="Pattern" type="System.String" defaultValue="strSQL = strSQL &amp; &quot;@@&quot; &amp; vbCrLf" allowAnonymous="true"/>
+      <add name="ReplaceChars" type="System.String" defaultValue="@@" />
+      <add name="Pattern" type="System.String" defaultValue="strSQL = strSQL &amp; &quot;@@&quot; &amp; vbCrLf"/>
     </group>
   </properties>
 </profile>

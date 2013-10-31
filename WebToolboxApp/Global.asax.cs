@@ -148,7 +148,6 @@ namespace WebToolboxApp
         void Session_Start(object sender, EventArgs e)
         {
             // 新規セッションを開始したときに実行するコードです
-            purgeExpiredProfiles();
         }
 
         void Session_End(object sender, EventArgs e)
@@ -160,64 +159,11 @@ namespace WebToolboxApp
 
         }
 
-        // ※ セキュリティプロバイダのメンバーシップとロールマネージャを使用するため、以下のコードは不要
-        //void Application_PostAuthenticateRequest(object sender, EventArgs e)
-        //{
-        //    // 現在ログインしているユーザIDを取得
-        //    if (Context.Request.IsAuthenticated)
-        //    {
-        //        var identity = Context.User.Identity;
-        //        string[] roles = Roles.GetRolesForUser();
-
-        //        //Context.User = new GenericPrincipal(identity, roles);
-        //        //Thread.CurrentPrincipal = Context.User;
-        //    }
-        //}
-        public void Profile_Personalize(object sender, ProfileEventArgs args)
-        {
-            try
-            {
-                var expiredDateTime = DateTime.Now.AddHours(-1);
-
-                // アクティブでない匿名プロファイルの一覧を取得する.
-                var inactiveProfiles = ProfileManager.GetAllInactiveProfiles(
-                    ProfileAuthenticationOption.Anonymous, expiredDateTime);
-                if (inactiveProfiles.Count > 0)
-                {
-                    // 期限切れのプロファイルを削除する.
-                    ProfileManager.DeleteProfiles(inactiveProfiles);
-                }
-
-                foreach (ProfileInfo profileInfo in inactiveProfiles)
-                {
-                    ProfileManager.DeleteProfile(profileInfo.UserName);
-                }
-
-                // 期限切れの匿名ユーザを削除する.
-                foreach (MembershipUser user in Membership.GetAllUsers())
-                {
-                    System.Diagnostics.Debug.WriteLine(user.UserName);
-                    if (!user.IsApproved)
-                    {
-                        AppLog.TraceEvent(TraceEventType.Information, 100,
-                            "deleteuser: " + user.UserName +
-                            " /lastUse=" + user.LastActivityDate);
-
-                        Membership.DeleteUser(user.UserName);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                AppLog.TraceEvent(TraceEventType.Error, 600,
-                    "期限切れプロファイルの削除に失敗しました。" + ex);
-            }
-        }
-
         /// <summary>
         /// 匿名ユーザから特定のユーザにログインされた場合に、
         /// 匿名ユーザの状態で設定されたプロファイルの内容をマージし、
         /// 且つ、特定ユーザーのプロファイルとユーザ識別情報を削除する.
+        /// (現在はweb.configで匿名ユーザは無効にしているため、この処理は実行されない)
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="args"></param>
@@ -264,14 +210,6 @@ namespace WebToolboxApp
                     Membership.DeleteUser(args.AnonymousID, true);
                 }
             }
-        }
-
-        /// <summary>
-        /// 期限切れの古い匿名プロファイルを削除する.
-        /// </summary>
-        private void purgeExpiredProfiles()
-        {
-
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Profile;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -13,7 +14,25 @@ namespace WebToolboxApp
         {
             if (!IsPostBack)
             {
-                TxtTabSize.Text = "4";
+                int tabSize;
+                string mode;
+
+                if (User.Identity.IsAuthenticated)
+                {
+                    // ログインしている場合は前回値を取得する.
+                    var profile = Context.Profile.GetProfileGroup("HtmlEscape");
+                    tabSize = (int)profile["TabSize"];
+                    mode = (string)profile["Mode"];
+                }
+                else
+                {
+                    // ログインしていない場合はデフォルト値を取得する.
+                    tabSize = Convert.ToInt32(ProfileBase.Properties["HtmlEscape.TabSize"].DefaultValue);
+                    mode = (string)ProfileBase.Properties["HtmlEscape.Mode"].DefaultValue;
+                }
+
+                TxtTabSize.Text = tabSize.ToString();
+                DrpConvertMode.SelectedValue = mode;
             }
         }
 
@@ -46,6 +65,15 @@ namespace WebToolboxApp
             dest = escapeHTML(dest, mode);
 
             TxtResult.Text = dest;
+
+            // 設定値を保存する
+            if (User.Identity.IsAuthenticated)
+            {
+                // ログインしている場合は前回値を保存する.
+                var profile = Context.Profile.GetProfileGroup("HtmlEscape");
+                profile["TabSize"] = tabsize;
+                profile["Mode"] = mode;
+            }
         }
 
         /// <summary>
