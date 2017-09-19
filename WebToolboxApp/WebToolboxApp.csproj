@@ -88,12 +88,6 @@
     <Content Include="err\err404.html" />
     <Content Include="err\err500.html" />
     <Content Include="HtmlEscape.aspx" />
-    <Content Include="Scripts\base64.js" />
-    <Content Include="Scripts\jsbn.js" />
-    <Content Include="Scripts\prng4.js" />
-    <Content Include="Scripts\rng.js" />
-    <Content Include="Scripts\rsa.js" />
-    <Content Include="Scripts\sha1.js" />
     <Content Include="SqlEnclosure.aspx" />
     <Content Include="SQLServerTblSizing.aspx" />
     <Content Include="Styles\Site.css" />
