@@ -17,30 +17,11 @@ namespace WebToolboxApp
             {
                 string pattern, replaceChars;
 
-                if (User.Identity.IsAuthenticated)
-                {
-                    // プロファイルから前回設定値の読み込み (新規の場合はデフォルト値)
-                    var profile = Context.Profile;
-                    var profileGroup = profile.GetProfileGroup("SqlEnclosure");
+                pattern = "strSQL = strSQL & \"@@\" & vbCrLf";
+                replaceChars = "@@";
 
-                    pattern = (string)profileGroup.GetPropertyValue("Pattern");
-                    replaceChars = (String)profileGroup.GetPropertyValue("ReplaceChars");
-
-                    TxtReplaceChars.Text = replaceChars;
-                    TxtPattern.Text = pattern;
-                }
-                else
-                {
-                    // ログインしていなければデフォルト値を用いる.
-                    // (注意) profile定義は allowAnonymous="true" の場合、
-                    // anonymousIdentificationを有効にする必要がある.
-                    // 匿名ユーザを識別するつもりがなければfalseにしておくこと.
-                    pattern = (string)ProfileBase.Properties["SqlEnclosure.pattern"].DefaultValue;
-                    replaceChars = (string)ProfileBase.Properties["SqlEnclosure.ReplaceChars"].DefaultValue;
-
-                    TxtReplaceChars.Text = replaceChars;
-                    TxtPattern.Text = pattern;
-                }
+                TxtReplaceChars.Text = replaceChars;
+                TxtPattern.Text = pattern;
             }
         }
 
@@ -49,31 +30,11 @@ namespace WebToolboxApp
             TxtSource.Text = "";
         }
 
-        /// <summary>
-        /// プロファイルへの設定値の保存
-        /// </summary>
-        /// <param name="replacePattern"></param>
-        /// <param name="replacechars"></param>
-        private void saveProfile(string replacePattern, string replacechars)
-        {
-            // プロファイルから前回設定値の保存
-            if (User.Identity.IsAuthenticated)
-            {
-                var profile = Context.Profile;
-                var profileGroup = profile.GetProfileGroup("SqlEnclosure");
-                profileGroup.SetPropertyValue("Pattern", replacePattern);
-                profileGroup.SetPropertyValue("ReplaceChars", replacechars);
-            }
-        }
-
         protected void BtnConvert_Click(object sender, EventArgs e)
         {
             string replacePattern = TxtPattern.Text;
             string replacechars = TxtReplaceChars.Text;
 
-            // プロファイルから前回設定値の保存
-            saveProfile(replacePattern, replacechars);
- 
             string input = TxtSource.Text;
             var buf = new StringBuilder();
 
@@ -92,9 +53,6 @@ namespace WebToolboxApp
         {
             string replacePattern = TxtPattern.Text;
             string replacechars = TxtReplaceChars.Text;
-
-            // プロファイルから前回設定値の保存
-            saveProfile(replacePattern, replacechars);
 
             string[] patterns = replacePattern.Split(
                 new string[] { replacechars }, StringSplitOptions.None);

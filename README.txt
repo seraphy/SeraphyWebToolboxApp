@@ -1,2 +1,2 @@
 seraphyの、ちょっとしたツールボックスアプリ
-http://toolbox.seraphyware.biz/
+http://seraphywebtoolbox.azurewebsites.net

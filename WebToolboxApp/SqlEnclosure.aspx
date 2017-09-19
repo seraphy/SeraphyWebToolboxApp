@@ -25,7 +25,7 @@
     </div>
     <div>
         <asp:Button ID="BtnConvert" runat="server" Text="Convert" OnClick="BtnConvert_Click" />
-        <asp:Button ID="BtnDeconvert" runat="server" Text="Convert" OnClick="BtnDeconvert_Click" />
+        <asp:Button ID="BtnDeconvert" runat="server" Text="Deconvert" OnClick="BtnDeconvert_Click" />
         <asp:Button ID="BtnClear" runat="server" Text="Clear" OnClick="BtnClear_Click" />
     </div>
     <div>

@@ -8,12 +8,5 @@
       <siteMapNode url="~/SQLServerTblSizing.aspx" title="SQLServerテーブルサイジング計算" />
       <siteMapNode url="~/HtmlEscape.aspx" title="HTMLエスケープ" />
     </siteMapNode>
-    <siteMapNode url="~/Admin/Default.aspx" title="管理" roles="*">
-      <siteMapNode url="~/Login/Login.aspx" title="ログイン"/>
-      <siteMapNode url="~/Admin/LogView.aspx" title="ログ" roles="*"/>
-      <siteMapNode url="~/Admin/GenRandom.aspx" title="ランダムデータ生成" roles="*"/>
-      <siteMapNode url="~/Login/ChangePassword.aspx" title="パスワードの変更"/>
-      <siteMapNode url="~/Login/Logout.aspx" title="ログアウト"/>
-    </siteMapNode>
   </siteMapNode>
 </siteMap>

@@ -17,19 +17,9 @@ namespace WebToolboxApp
                 int tabSize;
                 string mode;
 
-                if (User.Identity.IsAuthenticated)
-                {
-                    // ログインしている場合は前回値を取得する.
-                    var profile = Context.Profile.GetProfileGroup("HtmlEscape");
-                    tabSize = (int)profile["TabSize"];
-                    mode = (string)profile["Mode"];
-                }
-                else
-                {
-                    // ログインしていない場合はデフォルト値を取得する.
-                    tabSize = Convert.ToInt32(ProfileBase.Properties["HtmlEscape.TabSize"].DefaultValue);
-                    mode = (string)ProfileBase.Properties["HtmlEscape.Mode"].DefaultValue;
-                }
+                // ログインしていない場合はデフォルト値を取得する.
+                tabSize = 8;
+                mode = "Full";
 
                 TxtTabSize.Text = tabSize.ToString();
                 DrpConvertMode.SelectedValue = mode;
@@ -65,15 +55,6 @@ namespace WebToolboxApp
             dest = escapeHTML(dest, mode);
 
             TxtResult.Text = dest;
-
-            // 設定値を保存する
-            if (User.Identity.IsAuthenticated)
-            {
-                // ログインしている場合は前回値を保存する.
-                var profile = Context.Profile.GetProfileGroup("HtmlEscape");
-                profile["TabSize"] = tabsize;
-                profile["Mode"] = mode;
-            }
         }
 
         /// <summary>

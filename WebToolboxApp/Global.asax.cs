@@ -7,7 +7,6 @@ using System.Web.SessionState;
 using System.Security.Principal;
 using System.Threading;
 using System.Diagnostics;
-using WebToolboxApp.Modules;
 using System.Web.Profile;
 using System.Configuration;
 using System.Reflection;
@@ -17,16 +16,6 @@ namespace WebToolboxApp
     public class Global : System.Web.HttpApplication
     {
         /// <summary>
-        /// ロガー
-        /// </summary>
-        private TraceSource AppLog = new TraceSource("AppLog");
-
-        /// <summary>
-        /// 定期ローラー
-        /// </summary>
-        private TickRoller fileLoggerRoller;
-
-        /// <summary>
         /// アプリケーションの開始時
         /// </summary>
         /// <param name="sender"></param>
@@ -34,7 +23,6 @@ namespace WebToolboxApp
         void Application_Start(object sender, EventArgs e)
         {
             // アプリケーションのスタートアップで実行するコードです
-            fileLoggerRoller = new TickRoller();
             System.Diagnostics.Trace.WriteLine("Application_Start");
         }
 
@@ -57,15 +45,15 @@ namespace WebToolboxApp
         /// <param name="e"></param>
         public void Application_BeginRequest(object source, EventArgs e)
         {
-            // リクエスト開始時のログ
-            if (AppLog.Switch.ShouldTrace(TraceEventType.Start))
-            {
-                HttpContext context = HttpContext.Current;
-                HttpRequest req = context.Request;
+            //// リクエスト開始時のログ
+            //if (AppLog.Switch.ShouldTrace(TraceEventType.Start))
+            //{
+            //    HttpContext context = HttpContext.Current;
+            //    HttpRequest req = context.Request;
 
-                AppLog.TraceEvent(TraceEventType.Start, 1001,
-                    "BEGIN REQUEST: " + req.RawUrl);
-            }
+            //    AppLog.TraceEvent(TraceEventType.Start, 1001,
+            //        "BEGIN REQUEST: " + req.RawUrl);
+            //}
         }
 
         /// <summary>
@@ -76,20 +64,20 @@ namespace WebToolboxApp
         /// <param name="e"></param>
         public void Application_EndRequest(object source, EventArgs e)
         {
-            // リクエスト完了時のログ
-            if (AppLog.Switch.ShouldTrace(TraceEventType.Stop))
-            {
-                HttpContext context = HttpContext.Current;
-                HttpRequest req = context.Request;
+            //// リクエスト完了時のログ
+            //if (AppLog.Switch.ShouldTrace(TraceEventType.Stop))
+            //{
+            //    HttpContext context = HttpContext.Current;
+            //    HttpRequest req = context.Request;
 
-                // リクエスト開始から完了までにかかった時間をログに記録する.
-                DateTime beginProcessDt = context.Timestamp;
-                var now = DateTime.Now;
-                TimeSpan consumeTime = now - beginProcessDt;
+            //    // リクエスト開始から完了までにかかった時間をログに記録する.
+            //    DateTime beginProcessDt = context.Timestamp;
+            //    var now = DateTime.Now;
+            //    TimeSpan consumeTime = now - beginProcessDt;
 
-                AppLog.TraceEvent(TraceEventType.Stop, 1002,
-                    "END REQUEST(経過時間:" + consumeTime + "):" + req.RawUrl);
-            }
+            //    AppLog.TraceEvent(TraceEventType.Stop, 1002,
+            //        "END REQUEST(経過時間:" + consumeTime + "):" + req.RawUrl);
+            //}
         }
 
         
@@ -118,8 +106,7 @@ namespace WebToolboxApp
                             var uri = context.Request.Url;
                             if (uri != null)
                             {
-                                AppLog.TraceEvent(TraceEventType.Critical, 600,
-                                    "error location=" + uri.ToString());
+                                Trace.TraceError("error location=" + uri.ToString());
                             }
                         }
                         catch
@@ -132,8 +119,7 @@ namespace WebToolboxApp
                     int nest = 0;
                     for (; objErr != null; objErr = objErr.InnerException)
                     {
-                        AppLog.TraceEvent(TraceEventType.Critical, 600,
-                            string.Format("Global#Application_Error[{0}]: {1}", nest, objErr.ToString()));
+                        Trace.TraceError(string.Format("Global#Application_Error[{0}]: {1}", nest, objErr.ToString()));
                         nest++;
                     }
                 }
